@@ -1,0 +1,19 @@
+body, html, #Stage {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: white;
+    color: black;
+}
+
+* {
+    position: absolute;
+    outline: none;
+    border: none;
+}
+
+span, br, a {
+    position: relative;
+}

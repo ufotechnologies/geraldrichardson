@@ -1,0 +1,44 @@
+{
+    "photos": [
+        {
+            "id": "farley_mowat",
+            "title": "“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”",
+            "date": "2018-07-19",
+            "location": "",
+            "type": "Featured,Royal Gallery",
+            "image": "assets/images/intro/bg.jpg"
+        },
+        {
+            "id": "farley_mowat",
+            "title": "“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”",
+            "date": "2018-07-19",
+            "location": "",
+            "type": "Royal Gallery",
+            "image": "assets/images/intro/bg.jpg"
+        },
+        {
+            "id": "farley_mowat",
+            "title": "“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”",
+            "date": "2018-07-19",
+            "location": "",
+            "type": "Covers",
+            "image": "assets/images/intro/bg.jpg"
+        },
+        {
+            "id": "farley_mowat",
+            "title": "“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”",
+            "date": "2018-07-19",
+            "location": "",
+            "type": "Fashion",
+            "image": "assets/images/intro/bg.jpg"
+        },
+        {
+            "id": "farley_mowat",
+            "title": "“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”",
+            "date": "2018-07-19",
+            "location": "",
+            "type": "Navy",
+            "image": "assets/images/intro/bg.jpg"
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "alien-project",
+  "version": "1.0.0",
+  "author": "Patrick Schroen",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c && npm run build-timestamp",
+    "build-timestamp": "perl -i -0777 -pe \"s/(.*)\\.js.*\\\"/\\1\\.js?v=$(node -e 'console.log(Date.now())')\\\"/s\" public/index.html",
+    "build-vendor": "echo \"$(cat public/assets/js/lib/TweenMax.min.js public/assets/js/lib/CustomEase.min.js)\" > public/assets/js/vendor.js",
+    "dev": "concurrently --names \"ROLLUP,HTTP\" -c \"bgBlue.bold,bgGreen.bold\" \"rollup -c -w -m inline\" \"http-server -c-1 -p 8080 public\" || exit 0",
+    "start": "npm run dev",
+    "lint": "eslint src || exit 0"
+  },
+  "engines": {
+    "node": ">=6.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "eslint": "^5.15.0",
+    "eslint-plugin-html": "^5.0.3",
+    "http-server": "^0.11.1",
+    "rollup": "^1.4.0",
+    "rollup-plugin-bundleutils": "^1.1.1",
+    "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-glslify": "^1.1.0"
+  }
+}
