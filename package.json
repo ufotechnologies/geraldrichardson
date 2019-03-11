@@ -6,10 +6,11 @@
   "scripts": {
     "build": "rollup -c && npm run build-timestamp",
     "build-timestamp": "perl -i -0777 -pe \"s/(.*)\\.js.*\\\"/\\1\\.js?v=$(node -e 'console.log(Date.now())')\\\"/s\" public/index.html",
-    "build-vendor": "echo \"$(cat public/assets/js/lib/TweenMax.min.js public/assets/js/lib/CustomEase.min.js)\" > public/assets/js/vendor.js",
     "dev": "concurrently --names \"ROLLUP,HTTP\" -c \"bgBlue.bold,bgGreen.bold\" \"rollup -c -w -m inline\" \"http-server -c-1 -p 8080 public\" || exit 0",
     "start": "npm run dev",
-    "lint": "eslint src || exit 0"
+    "lint": "eslint src || exit 0",
+    "pngquant": "rm -rf public/assets/images && cp -r src/images public/assets/ && find public/assets/images -name '**.png' -exec pngquant --strip --ext=.png --force {} \\;",
+    "pngquant-flat": "rm -f public/assets/*.png && cp src/images/*.png public/assets/ && find public/assets -name '*.png' -exec pngquant --strip --ext=.png --force {} \\;"
   },
   "engines": {
     "node": ">=6.9.0"
@@ -19,9 +20,14 @@
     "eslint": "^5.15.0",
     "eslint-plugin-html": "^5.0.3",
     "http-server": "^0.11.1",
+    "mdn-polyfills": "^5.16.0",
+    "promise-polyfill": "^8.1.0",
+    "regenerator-runtime": "^0.13.1",
     "rollup": "^1.4.0",
     "rollup-plugin-bundleutils": "^1.1.1",
     "rollup-plugin-eslint": "^5.0.0",
-    "rollup-plugin-glslify": "^1.1.0"
+    "rollup-plugin-glslify": "^1.1.0",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "whatwg-fetch": "^3.0.0"
   }
 }

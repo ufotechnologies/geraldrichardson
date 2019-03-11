@@ -1,5 +1,6 @@
-import { timestamp, uglify } from 'rollup-plugin-bundleutils';
+import { timestamp, babel, uglify } from 'rollup-plugin-bundleutils';
 
+import resolve from 'rollup-plugin-node-resolve';
 import glslify from 'rollup-plugin-glslify';
 import { eslint } from 'rollup-plugin-eslint';
 
@@ -12,14 +13,15 @@ export default {
         format: 'es'
     },
     plugins: [
+        resolve(),
         glslify({ basedir: 'src/shaders' }),
         eslint({ include: ['src/**', 'alien.js/**'] }),
+        babel({ compact: false }),
         uglify({
             output: {
                 preamble: `//   _  /._  _  r${version.split('.')[1]} ${timestamp()}\n//  /_|///_'/ /`
             },
-            keep_classnames: true,
-            keep_fnames: true
+            safari10: true
         })
     ]
 };
