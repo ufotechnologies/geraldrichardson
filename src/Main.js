@@ -623,7 +623,7 @@ class UIRow extends Interface {
         initRow();
 
         function initHTML() {
-            self.size('auto', 310);
+            self.size('100%', 310);
             self.css({ position: 'relative' });
             top = self.create('.top');
             top.size('100%', 70);
@@ -633,7 +633,8 @@ class UIRow extends Interface {
             container.css({
                 position: 'relative',
                 whiteSpace: 'nowrap',
-                overflow: 'auto hidden'
+                overflowX: 'auto',
+                overflowY: 'hidden'
             });
         }
 
@@ -1357,6 +1358,10 @@ class PierreBertonVideo extends Interface {
         const self = this;
         let media, player, caption, title, button;
 
+        initHTML();
+        initViews();
+        initVideo();
+
         function initHTML() {
             self.size('100%').enable3D(2000).invisible();
             self.css({
@@ -1412,13 +1417,6 @@ class PierreBertonVideo extends Interface {
             player.object.size('100%');
             self.events.add(player, Video.ENDED, ended);
             player.unmute();
-            const promise = player.play();
-            if (promise) {
-                promise.catch(() => {
-                    //player.mute();
-                    //player.play();
-                });
-            }
         }
 
         async function animateIn() {
@@ -1438,11 +1436,15 @@ class PierreBertonVideo extends Interface {
         };
 
         this.start = () => {
-            initHTML();
-            initViews();
+            const promise = player.play();
+            if (promise) {
+                promise.catch(() => {
+                    //player.mute();
+                    //player.play();
+                });
+            }
             addListeners();
             this.events.fire(Events.VIDEO, { open: true });
-            this.delayedCall(initVideo, 500);
             this.delayedCall(animateIn, 500);
         };
     }
@@ -1469,15 +1471,15 @@ class Container extends Interface {
             Stage.allowScroll();
             Stage.css({ position: '', overflow: '' });
             self.size('100%', 'auto').mouseEnabled(true);
-            self.css({ marginBottom: 70 });
+            self.css({ paddingBottom: 70 });
             Stage.add(self);
             window.history.scrollRestoration = 'manual';
 
             wrapper = self.create('.wrapper');
             wrapper.css({
                 position: 'relative',
-                marginTop: 70,
-                marginBottom: 30
+                paddingTop: 70,
+                paddingBottom: 30
             });
         }
 
