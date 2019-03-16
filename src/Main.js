@@ -633,9 +633,10 @@ class UIRow extends Interface {
             container.css({
                 position: 'relative',
                 whiteSpace: 'nowrap',
-                overflowX: 'auto',
+                overflowX: 'scroll',
                 overflowY: 'hidden'
             });
+            if (Device.mobile) container.css({ '-webkit-overflow-scrolling': 'touch' });
         }
 
         function initRow() {
@@ -974,7 +975,7 @@ class UINav extends Interface {
         addListeners();
 
         function initHTML() {
-            self.size('100%', 70).setZ(20).invisible();
+            self.size('100%', 70).setZ(20).hide();
         }
 
         function initLinks() {
@@ -996,7 +997,11 @@ class UINav extends Interface {
         }
 
         this.animateIn = () => {
-            this.visible().css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeInOutSine');
+            this.show().css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeInOutSine');
+        };
+
+        this.animateOut = () => {
+            this.tween({ opacity: 0 }, 700, 'easeOutSine', () => this.hide());
         };
     }
 }
@@ -1034,7 +1039,16 @@ class UI extends Interface {
         }
 
         function addListeners() {
+            self.events.add(Events.PHOTO, photo);
             self.events.add(Events.TOGGLE_ABOUT, toggleAbout);
+        }
+
+        function photo(e) {
+            if (e.open) {
+                nav.animateOut();
+            } else {
+                nav.animateIn();
+            }
         }
 
         function toggleAbout(e) {
@@ -1075,8 +1089,7 @@ class Loader extends Interface {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                cursor: 'pointer',
-                //filter: 'grayscale(100%)'
+                cursor: 'pointer'
             });
 
             bg = self.create('.bg');
@@ -1084,7 +1097,7 @@ class Loader extends Interface {
         }
 
         function initViews() {
-            title = self.initClass(UICaption, '“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...”');
+            title = self.initClass(UICaption, '“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...” &nbsp;—&nbsp;Gerald&nbsp;Richardson');
             view = self.initClass(UILoader);
             caption = self.initClass(UICaptionCard, [title, view]);
         }
@@ -1363,15 +1376,13 @@ class PierreBertonVideo extends Interface {
         initVideo();
 
         function initHTML() {
-            self.size('100%').enable3D(2000).invisible();
+            self.size('100%').enable3D(2000);
             self.css({
                 overflow: 'hidden',
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                cursor: 'pointer',
-                filter: 'grayscale(100%)',
-                opacity: 0
+                cursor: 'pointer'
             });
 
             media = self.create('fullscreen-video');
@@ -1379,7 +1390,7 @@ class PierreBertonVideo extends Interface {
         }
 
         function initViews() {
-            title = self.initClass(UICaption, '“Great Days On King” — Pierre Berton');
+            title = self.initClass(UICaption, '“Great Days On King” &nbsp;—&nbsp;Pierre&nbsp;Berton');
             button = self.initClass(UIButton, (Device.mobile ? 'Tap' : 'Click') + ' to skip');
             caption = self.initClass(UICaptionCard, [title, button]);
         }
@@ -1420,7 +1431,6 @@ class PierreBertonVideo extends Interface {
         }
 
         async function animateIn() {
-            self.visible().tween({ opacity: 1 }, 700, 'easeOutSine');
             await caption.animateIn();
         }
 
@@ -1436,6 +1446,7 @@ class PierreBertonVideo extends Interface {
         };
 
         this.start = () => {
+            player.element.load();
             const promise = player.play();
             if (promise) {
                 promise.catch(() => {
