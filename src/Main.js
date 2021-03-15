@@ -1555,7 +1555,7 @@ class Container extends Interface {
                 lines.push(line);
             });
 
-            ['1950s Royals', '1939 Royal Visit', 'Navy', 'Fashion', 'Portraits of Grandpa', 'Film and Television', 'People'].forEach(tag => {
+            ['1950s Royals', '1939 Royal Visit', 'Navy', 'Fashion', 'Portraits of Gerry Richardson', 'Film and Television', 'News'].forEach(tag => {
                 const matched = [];
                 Config.PHOTOS.forEach(item => {
                     if (~item.type.toLowerCase().indexOf(tag.toLowerCase())) matched.push(item);

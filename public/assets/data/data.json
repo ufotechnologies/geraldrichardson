@@ -629,7 +629,7 @@
             "title": "",
             "date": "",
             "location": "",
-            "type": "Featured,Portraits of Grandpa",
+            "type": "Featured,Portraits of Gerry Richardson",
             "image": "Grandpa_1.jpg"
         },
         {
@@ -637,7 +637,7 @@
             "title": "",
             "date": "",
             "location": "",
-            "type": "Featured,Portraits of Grandpa",
+            "type": "Featured,Portraits of Gerry Richardson",
             "image": "grandpa_portrait_credit.jpg"
         },
         {
@@ -825,12 +825,28 @@
             "image": "actor_4_credit.jpg"
         },
         {
-            "id": "people_1",
+            "id": "news_1",
             "title": "",
             "date": "",
             "location": "",
-            "type": "Featured,People",
-            "image": "people_1_credit.jpg"
+            "type": "Featured,News",
+            "image": "news_1_credit.jpg"
+        },
+        {
+            "id": "news_2",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "Casa_Loma_credit.jpg"
+        },
+        {
+            "id": "news_3",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "Horses_credit.jpg"
         }
     ]
 }
