@@ -385,12 +385,28 @@
             "image": "1950s_Royals_48_credit.jpg"
         },
         {
+            "id": "1939_king_st",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,1939 Royal Visit",
+            "image": "1939_King_St_cedit.jpg"
+        },
+        {
             "id": "1939_royal_family_1",
             "title": "",
             "date": "",
             "location": "",
             "type": "Featured,1939 Royal Visit",
             "image": "1939_Royal_Family_1_credit.jpg"
+        },
+        {
+            "id": "1939_royal_family_2",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,1939 Royal Visit",
+            "image": "1939_Royal_Family_2_credit.jpg"
         },
         {
             "id": "1939_royals_1",
@@ -407,6 +423,174 @@
             "location": "",
             "type": "1939 Royal Visit",
             "image": "1939_Royals_2_credit.jpg"
+        },
+        {
+            "id": "1939_4",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_4.jpg"
+        },
+        {
+            "id": "1939_5",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_5.jpg"
+        },
+        {
+            "id": "1939_6",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_6.jpg"
+        },
+        {
+            "id": "1939_7",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_7.jpg"
+        },
+        {
+            "id": "1939_8",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_8.jpg"
+        },
+        {
+            "id": "1939_9",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_9.jpg"
+        },
+        {
+            "id": "1939_10",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_10.jpg"
+        },
+        {
+            "id": "1939_12",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_12.jpg"
+        },
+        {
+            "id": "1939_13",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_13.jpg"
+        },
+        {
+            "id": "1939_14",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_14.jpg"
+        },
+        {
+            "id": "1939_15",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_15.jpg"
+        },
+        {
+            "id": "1939_16",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_16.jpg"
+        },
+        {
+            "id": "1939_17",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_17.jpg"
+        },
+        {
+            "id": "1939_18",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_18.jpg"
+        },
+        {
+            "id": "1939_19",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_19.jpg"
+        },
+        {
+            "id": "1939_20",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_20.jpg"
+        },
+        {
+            "id": "1939_21",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_21.jpg"
+        },
+        {
+            "id": "1939_22",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_22.jpg"
+        },
+        {
+            "id": "1939_23",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_23.jpg"
+        },
+        {
+            "id": "1939_24",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_24.jpg"
+        },
+        {
+            "id": "1939_25",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "1939 Royal Visit",
+            "image": "1939_25.jpg"
         },
         {
             "id": "navy_1",
@@ -625,6 +809,14 @@
             "image": "fashion_9_credit.jpg"
         },
         {
+            "id": "fashion_10",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Fashion",
+            "image": "IMG_1986.jpg"
+        },
+        {
             "id": "portraits_of_grandpa_1",
             "title": "",
             "date": "",
@@ -639,6 +831,62 @@
             "location": "",
             "type": "Featured,Portraits of Gerry Richardson",
             "image": "grandpa_portrait_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_1",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_1_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_2",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_2_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_3",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_3_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_4",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_4_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_5",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_5_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_6",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_6_credit.jpg"
+        },
+        {
+            "id": "navy_portrait_7",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Portraits of Gerry Richardson",
+            "image": "Navy_Portrait_7_credit.jpg"
         },
         {
             "id": "commandos_1",
@@ -825,6 +1073,14 @@
             "image": "actor_4_credit.jpg"
         },
         {
+            "id": "news_television",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Film and Television",
+            "image": "IMG_2007.jpg"
+        },
+        {
             "id": "news_1",
             "title": "",
             "date": "",
@@ -847,6 +1103,30 @@
             "location": "",
             "type": "Featured,News",
             "image": "Horses_credit.jpg"
+        },
+        {
+            "id": "newspaper_presses",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "newspaper_presses_credit.jpg"
+        },
+        {
+            "id": "william_lyon_mackenzie_king",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "William_Lyon_Mackenzie_King_credit.jpg"
+        },
+        {
+            "id": "news_color",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "IMG_1980.jpg"
         }
     ]
 }

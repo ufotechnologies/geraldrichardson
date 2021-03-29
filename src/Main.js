@@ -255,7 +255,7 @@ class UIAbout extends Interface {
 
             wrapper.transform({ scale }).transformPoint('50%', '80%').css({ marginTop: -(marginTop + marginTopOffset) });
 
-            bg.bg('assets/photos/1600/Grandpa_1.jpg', 'cover');
+            bg.bg('assets/photos/1600/BIO_newspaperpresses.jpg', 'cover');
         }
 
         this.animateIn = () => {
