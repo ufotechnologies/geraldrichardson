@@ -729,6 +729,78 @@
             "image": "Navy_22_credit.jpg"
         },
         {
+            "id": "navy_23",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_23_credit.jpg"
+        },
+        {
+            "id": "navy_24",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_24_credit.jpg"
+        },
+        {
+            "id": "navy_25",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_25_credit.jpg"
+        },
+        {
+            "id": "navy_26",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_26_credit.jpg"
+        },
+        {
+            "id": "navy_28",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_28_credit.jpg"
+        },
+        {
+            "id": "navy_29",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_29_credit.jpg"
+        },
+        {
+            "id": "navy_30",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_30_credit.jpg"
+        },
+        {
+            "id": "navy_31",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_31_credit.jpg"
+        },
+        {
+            "id": "navy_32",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,Navy",
+            "image": "Navy_32_credit.jpg"
+        },
+        {
             "id": "fashion_colour_1",
             "title": "",
             "date": "",
@@ -807,14 +879,6 @@
             "location": "",
             "type": "Featured,Fashion",
             "image": "fashion_9_credit.jpg"
-        },
-        {
-            "id": "fashion_10",
-            "title": "",
-            "date": "",
-            "location": "",
-            "type": "Featured,Fashion",
-            "image": "IMG_1986.jpg"
         },
         {
             "id": "portraits_of_grandpa_1",
@@ -1121,12 +1185,20 @@
             "image": "William_Lyon_Mackenzie_King_credit.jpg"
         },
         {
-            "id": "news_color",
+            "id": "news_color_1",
             "title": "",
             "date": "",
             "location": "",
             "type": "Featured,News",
             "image": "IMG_1980.jpg"
+        },
+        {
+            "id": "news_color_2",
+            "title": "",
+            "date": "",
+            "location": "",
+            "type": "Featured,News",
+            "image": "IMG_1986.jpg"
         }
     ]
 }
