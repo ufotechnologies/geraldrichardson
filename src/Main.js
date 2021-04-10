@@ -9,8 +9,8 @@ import 'promise-polyfill/src/polyfill';
 import 'mdn-polyfills/Object.assign';
 import 'regenerator-runtime/runtime'; // Babel support for async/await
 
-import { Events, Stage, Interface, Device, Interaction, Mouse, Accelerometer, Utils,
-    Assets, Video, AssetLoader, FontLoader, StateDispatcher, ScrollLock, Vector2 } from '../alien.js/src/Alien.js';
+import { Events, Stage, Interface, Device, Interaction, Mouse, Utils,
+    Assets, Video, AssetLoader, FontLoader, StateDispatcher, ScrollLock } from '../alien.js/src/Alien.js';
 
 Config.UI_OFFSET = Device.phone ? 15 : 25;
 Config.PHOTOS = [];
@@ -148,24 +148,31 @@ class UIAboutText extends Interface {
     constructor() {
         super('.UIAboutText');
         const self = this;
+        const size = 17;
         let text;
 
         initHTML();
         initText();
 
         function initHTML() {
-            self.size(420, 200).center(1, 0).css({ top: 150 }).invisible();
+            self.css({ position: 'relative', opacity: 0 });
         }
 
         function initText() {
             text = self.create('.text');
-            text.fontStyle('CircularLight', 13, '#fff');
-            text.css({ lineHeight: 21, textAlign: 'center' });
-            text.html('Eye of the Stormers is a collaborative project between Bastille and Spotify, as a companion piece to their new album, Wild World. The more times a city streams Bastille’s music on Spotify, the bigger the storm they create.<br/><br/>Start streaming now to leave your mark on the Wild World.<br/>You never know what a storm might bring...');
+            text.fontStyle('"Helvetica Neue", Helvetica, Arial, sans-serif', size, 'rgba(0, 0, 0, 0.9)');
+            text.css({
+                position: 'relative',
+                maxWidth: 500,
+                margin: '50px auto',
+                lineHeight: '1.5'
+            });
+            if (Device.mobile) text.css({ margin: '50px 35px' });
+            text.html('With a career spanning over 60 years, Gerald Richardson photographed many subjects and events, including the Royal Tour of 1939.  The British press voted one of his photographs the best of the Royal Tour. The images were printed in over 1400 newspapers making them viral images of their time.<br><br>While notable events and people like the Dionne Quintuplets, the Royal Tour of 1951, Farley Mowat, Gerda Munsinger and others appeared in his work, he also served time in the  Royal Canadian Navy, heading up the Photographic Unit.  By 1940, all three services – Army, Navy and Air Force – had photographers serving overseas  in these newly-formed photographic units. Three of the original photographers who were active in 1940 were our grandfather, Gerald Richardson of the Navy, Laurie Audrain of the Army, and Norman Drolet of the Air Force. After the war he photographed for the Toronto Star and later produced and directed films for the CBC.<br><br>Our grandfather left us the pages of the book “60 years Behind the Camera” that before his passing, he had hoped to publish. This website is a work in progress and the intention is to add more details below the photographs and upload a digitized version of his book. For now, we will continue to dig through hundreds of photographs and negatives that he left us and share when we have time to digitize and transcribe his words.');
         }
 
         this.animateIn = () => {
-            this.visible().css({ opacity: 0 }).tween({ opacity: 1 }, 3000, 'easeInOutSine');
+            this.tween({ opacity: 1 }, 3000, 'easeInOutSine');
         };
     }
 }
@@ -175,36 +182,39 @@ class UIAbout extends Interface {
     constructor() {
         super('UIAbout');
         const self = this;
-        const mouse = new Vector2();
-        let bg, wrapper, text, close, marginTop, scale;
+        let container, bg, wrapper, text, close;
 
         initHTML();
         initText();
         initClose();
-        addListeners();
 
         function initHTML() {
-            self.size('100%').invisible().setZ(9).mouseEnabled(true);
-            self.css({ overflow: 'hidden' });
+            self.size('100%').invisible().setZ(100000).mouseEnabled(true);
+            self.css({ position: 'fixed', overflow: 'hidden' });
 
-            bg = self.create('.bg');
-            bg.size('100%').css({ opacity: 0.8 }).setZ(0).mouseEnabled(false);
+            container = self.create('.container');
+            container.size('100%');
+            container.css({
+                overflowX: 'hidden',
+                overflowY: 'scroll'
+            });
+            container.bg('#fff');
+            if (Device.mobile) container.css({ '-webkit-overflow-scrolling': 'touch' });
 
-            wrapper = self.create('.wrapper');
-            wrapper.val = 1;
-            wrapper.size(500, 480).center().setZ(2);
-            marginTop = 480 / 2;
+            bg = container.create('.bg');
+            bg.size('100%', '50vh').mouseEnabled(false);
+            bg.bg('assets/photos/1600/BIO_newspaperpresses.jpg', 'cover');
 
-            wrapper.inner = wrapper.create('.inner');
-            wrapper.inner.size('100%').transform({ z: 10 });
+            wrapper = container.create('.wrapper');
+            wrapper.css({ position: 'relative', paddingTop: '50vh' });
         }
 
         function initText() {
-            text = wrapper.inner.initClass(UIAboutText);
+            text = wrapper.initClass(UIAboutText);
         }
 
         function initClose() {
-            close = self.initClass(UIClose);
+            close = container.initClass(UIClose);
             self.events.add(close, Events.CLICK, () => {
                 self.events.fire(Events.TOGGLE_ABOUT, { open: false });
             });
@@ -215,59 +225,9 @@ class UIAbout extends Interface {
             });
         }
 
-        function loop() {
-            let x, y;
-            if (Device.mobile) {
-                mouse.lerp(Accelerometer, 0.1);
-                x = Math.range(mouse.x, -5, 5, 0, Stage.width, true);
-                y = Math.range(mouse.y, -10, 10, 0, Stage.height, true);
-            } else {
-                mouse.lerp(Mouse, 0.05);
-                x = mouse.x;
-                y = mouse.y;
-            }
-
-            wrapper.x = Math.range(x, 0, Stage.width, 25, -25) * wrapper.val;
-            wrapper.scale = scale;
-            wrapper.z = 50;
-            wrapper.rotationY = Math.range(x, 0, Stage.width, -10, 10) * wrapper.val * 0.8;
-            wrapper.rotationX = Math.range(y, 0, Stage.height, 5, -5) * wrapper.val * 0.8;
-            wrapper.transform();
-
-            bg.scale = 1.1;
-            bg.x = -Math.range(x, 0, Stage.width, 25, -25) * wrapper.val;
-            bg.rotationY = -Math.range(x, 0, Stage.width, -10, 10) * wrapper.val * 0.5;
-            bg.rotationX = -Math.range(y, 0, Stage.height, 5, -5) * wrapper.val * 0.5;
-            bg.transform();
-        }
-
-        function addListeners() {
-            self.events.add(Events.RESIZE, resize);
-            resize();
-        }
-
-        function resize() {
-            const scaleX = Math.range(Stage.width, 0, 520, 0, 1, true),
-                scaleY = Math.range(Stage.height, 0, 700, 0, 1, true);
-            scale = Math.min(scaleX, scaleY);
-            const scaleOffset = 1 - scale,
-                marginTopOffset = (marginTop * scaleOffset) / 2;
-
-            wrapper.transform({ scale }).transformPoint('50%', '80%').css({ marginTop: -(marginTop + marginTopOffset) });
-
-            bg.bg('assets/photos/1600/BIO_newspaperpresses.jpg', 'cover');
-        }
-
         this.animateIn = () => {
             Global.ABOUT_VISIBLE = true;
-            resize();
-            this.enable3D(2000);
-            wrapper.enable3D();
-            wrapper.inner.enable3D();
-            this.startRender(loop);
-
             this.visible();
-            tween(wrapper, { val: 1 }, 500, 'easeInOutSine');
             bg.css({ opacity: 0 }).tween({ opacity: 1 }, 800, 'easeOutSine', 100);
             this.clearTween().transform({ scale: 1.3 }).tween({ scale: 1 }, 2000, 'easeOutQuart', 100);
 
@@ -277,14 +237,7 @@ class UIAbout extends Interface {
 
         this.animateOut = callback => {
             Global.ABOUT_VISIBLE = false;
-            tween(wrapper, { val: 1 }, 500, 'easeInOutSine');
-            this.tween({ opacity: 0 }, 700, 'easeOutSine');
-            wrapper.inner.tween({ scale: 0.95 }, 700, 'easeOutSine');
-
-            this.delayedCall(() => {
-                callback();
-                this.stopRender(loop);
-            }, 700);
+            this.tween({ opacity: 0 }, 700, 'easeOutSine', callback);
         };
     }
 }
@@ -363,7 +316,7 @@ class UIPhotoCarousel extends Interface {
         }
 
         function initCarousel() {
-            //self.initClass(Title, Util.formatDate(Utils.date(`${date.date}T18:00:00`)), 12, '#b3b9bf').css({ marginTop: 10, marginBottom: 0 });
+            //self.initClass(Title, Util.formatDate(Utils.date(`${date.date}T18:00:00`)), 15, '#b3b9bf').css({ marginTop: 10, marginBottom: 0 });
             current = self.initClass(UIPhotoCard, data);
         }
 
@@ -465,7 +418,7 @@ class UIPhoto extends Interface {
         let media, carousel, close;
 
         function initHTML() {
-            self.size('100%').hide();
+            self.size('100%').hide().setZ(100000);
             self.css({
                 overflow: 'hidden',
                 position: 'fixed',
@@ -641,8 +594,11 @@ class UIRow extends Interface {
 
         function initRow() {
             AssetLoader.loadAssets(photos.map(item => `assets/photos/400/${item.image}`));
-            title = top.initClass(UITitle, tag);
-            title.size();
+            title = top.initClass(UITitle, tag, true);
+            title.css({
+                padding: '0 30px',
+                lineHeight: 70
+            });
             photos.forEach((item, i) => {
                 item.index = i;
                 createCard(item);
@@ -654,11 +610,6 @@ class UIRow extends Interface {
             card.animateIn();
             cards.push(card);
         }
-
-        this.scroll = x => {
-            container.size();
-            title.css({ x: x + title.width > container.width ? container.width - title.width : x });
-        };
 
         this.animateIn = () => {
             title.animateIn(1000);
@@ -674,7 +625,7 @@ class UIButton extends Interface {
     constructor(copy = '') {
         super('.UIButton');
         const self = this;
-        const size = 11;
+        const size = 15;
         let text;
 
         initHTML();
@@ -686,12 +637,9 @@ class UIButton extends Interface {
 
         function initText() {
             text = self.create('.text');
-            text.fontStyle('Source Sans Pro', size, '#000');
+            text.fontStyle('"Helvetica Neue", Helvetica, Arial, sans-serif', size, 'rgba(0, 0, 0, 0.9)');
             text.css({
-                fontWeight: '600',
-                lineHeight: size * 1.5,
-                letterSpacing: 1,
-                textTransform: 'uppercase',
+                fontWeight: 'bold',
                 whiteSpace: 'nowrap'
             });
             text.html(copy);
@@ -713,10 +661,10 @@ class UIButton extends Interface {
 
 class UITitle extends Interface {
 
-    constructor(copy = '') {
+    constructor(copy = '', bold) {
         super('.UITitle');
         const self = this;
-        const size = 11;
+        const size = 15;
         let text;
 
         initHTML();
@@ -728,20 +676,13 @@ class UITitle extends Interface {
 
         function initText() {
             text = self.create('.text');
-            text.fontStyle('Source Sans Pro', size, '#000');
+            text.fontStyle('"Helvetica Neue", Helvetica, Arial, sans-serif', size, 'rgba(0, 0, 0, 0.9)');
             text.css({
-                position: 'relative',
                 display: 'inline-block',
-                padding: '0 30px',
-                fontWeight: '600',
-                lineHeight: 70,
-                letterSpacing: 1,
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap'
+                position: 'relative',
+                fontWeight: bold ? 'bold' : ''
             });
             text.html(copy);
-            text.size();
-            self.size(text.width, text.height);
         }
 
         this.update = e => {
@@ -763,7 +704,7 @@ class UICaption extends Interface {
     constructor(copy = '', bold) {
         super('.UICaption');
         const self = this;
-        const size = 16;
+        const size = 17;
         let text;
 
         initHTML();
@@ -775,14 +716,11 @@ class UICaption extends Interface {
 
         function initText() {
             text = self.create('.text');
-            //text.fontStyle('Source Sans Pro', size, '#000', 'italic');
-            text.fontStyle('Crimson Text', size, '#000');
-            //text.fontStyle('Minion Pro', size, '#000');
+            text.fontStyle('Playfair Display', size, 'rgba(0, 0, 0, 0.9)');
             text.css({
                 position: 'relative',
-                fontWeight: bold ? '600' : '400',
-                lineHeight: size * 1.4,
-                letterSpacing: size * 0.035
+                fontWeight: bold ? 'bold' : '',
+                lineHeight: '1.5'
             });
             text.html(copy);
         }
@@ -796,7 +734,7 @@ class UICaption extends Interface {
         };
 
         this.animateOut = async delay => {
-            await this.tween({ opacity: 0 }, 500, 'easeOutSine', delay);
+            await this.tween({ opacity: 0 }, 200, 'easeOutSine', delay);
         };
     }
 }
@@ -806,7 +744,7 @@ class UILoader extends Interface {
     constructor() {
         super('.UILoader');
         const self = this;
-        const size = 11;
+        const size = 15;
         let number, button;
 
         this.progress = 0;
@@ -820,31 +758,30 @@ class UILoader extends Interface {
 
         function initViews() {
             number = self.initClass(UIButton);
-            button = self.initClass(UIButton, (Device.mobile ? 'Tap' : 'Click') + ' to enter');
+            button = self.initClass(UIButton, 'Enter');
         }
 
         this.update = e => {
             tween(this, { progress: e.percent }, 2500, 'easeInOutSine', null, () => {
                 if (!number.element) return;
                 number.update(Math.round(this.progress * 100));
-                if (this.progress >= 1) this.events.fire(Events.COMPLETE);
+                if (this.progress >= 1) this.start();
             });
         };
 
         this.start = () => {
-            if (!this.animatedIn) return;
             number.tween({ opacity: 0 }, 200, 'easeOutSine', () => {
                 number.hide();
-                this.delayedCall(() => {
-                    if (!this.animatedIn) return;
-                    button.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutQuart');
-                }, 100);
+                button.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutQuart');
             });
         };
 
-        this.animateIn = async () => {
+        this.animateIn = () => {
             this.animatedIn = true;
-            await number.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutCubic', 2000);
+            this.delayedCall(async () => {
+                if (this.progress >= 1) return;
+                await number.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutCubic');
+            }, 2000);
         };
 
         this.animateOut = async delay => {
@@ -894,8 +831,9 @@ class UINavLink extends Interface {
     constructor(config) {
         super('.UINavLink');
         const self = this;
-        const size = 11;
-        let text, over, line;
+        const size = 15;
+        // let text, over, line;
+        let text, line;
 
         initHTML();
         initText();
@@ -905,26 +843,23 @@ class UINavLink extends Interface {
             self.size(config.width, 25).css({ bottom: 0, overflow: 'hidden' });
 
             line = self.create('.line');
-            line.size(config.width, 2).css({ bottom: 3, left: '-100%' }).bg('#000');
+            line.size(config.width, 2).css({ bottom: 3, left: '-100%' }).bg('rgba(0, 0, 0, 0.9)');
         }
 
         function initText() {
             text = self.create('.text');
-            text.fontStyle('Source Sans Pro', size, '#000');
+            text.fontStyle('"Helvetica Neue", Helvetica, Arial, sans-serif', size, 'rgba(0, 0, 0, 0.9)');
             text.css({
-                width: '100%',
-                fontWeight: '600',
-                letterSpacing: 1,
-                textAlign: 'center',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-                opacity: 0.75
+                fontWeight: 'bold',
+                lineHeight: '1.2',
+                textTransform: 'capitalize',
+                whiteSpace: 'nowrap'
             });
             text.html(config.text);
 
-            over = text.clone();
-            self.add(over);
-            over.transform({ y: 15 }).css({ opacity: 0 });
+            // over = text.clone();
+            // self.add(over);
+            // over.transform({ y: 15 }).css({ opacity: 0 });
         }
 
         function addListeners() {
@@ -936,12 +871,12 @@ class UINavLink extends Interface {
             if (self.locked) return;
             self.events.fire(Events.HOVER, e);
             if (e.action === 'over') {
-                text.tween({ y: -12, opacity: 0 }, 300, 'easeOutCubic');
-                over.tween({ y: 0, opacity: 1 }, 500, 'easeOutCubic');
+                // text.tween({ y: -15, opacity: 0 }, 300, 'easeOutCubic');
+                // over.tween({ y: 0, opacity: 1 }, 500, 'easeOutCubic');
                 line.clearTween().transform({ x: 0 }).tween({ x: config.width }, 300, 'easeOutCubic');
             } else {
-                text.tween({ y: 0, opacity: 0.75 }, 300, 'easeOutCubic');
-                over.tween({ y: 15, opacity: 0 }, 500, 'easeOutCubic');
+                // text.tween({ y: 0, opacity: 0.75 }, 300, 'easeOutCubic');
+                // over.tween({ y: 15, opacity: 0 }, 500, 'easeOutCubic');
                 line.tween({ x: config.width * 2 }, 300, 'easeOutCubic');
             }
         }
@@ -956,8 +891,8 @@ class UINavLink extends Interface {
 
         this.unlock = () => {
             this.locked = false;
-            text.tween({ y: 0, opacity: 0.75 }, 300, 'easeOutCubic');
-            over.tween({ y: 15, opacity: 0 }, 500, 'easeOutCubic');
+            // text.tween({ y: 0, opacity: 0.75 }, 300, 'easeOutCubic');
+            // over.tween({ y: 15, opacity: 0 }, 500, 'easeOutCubic');
             line.tween({ x: config.width * 2 }, 300, 'easeOutCubic');
         };
     }
@@ -979,7 +914,7 @@ class UINav extends Interface {
         }
 
         function initLinks() {
-            project = self.initClass(UINavLink, { text: 'About', width: 40 });
+            project = self.initClass(UINavLink, { text: 'About', width: 45 });
             project.css({
                 top: 25,
                 right: 30
@@ -1011,7 +946,7 @@ class UI extends Interface {
     constructor() {
         super('UI');
         const self = this;
-        let wrapper, nav, about;
+        let nav, about;
 
         initContainer();
         initView();
@@ -1019,14 +954,11 @@ class UI extends Interface {
         animateIn();
 
         function initContainer() {
-            self.size('100%').setZ(10).mouseEnabled(false).invisible();
+            self.size('100%').mouseEnabled(false).invisible();
             self.css({
                 top: 0,
                 left: 0
             });
-
-            wrapper = self.create('.wrapper');
-            wrapper.size('100%');
         }
 
         function initView() {
@@ -1053,14 +985,10 @@ class UI extends Interface {
 
         function toggleAbout(e) {
             if (e.open) {
-                ScrollLock.instance().lock();
-                wrapper.tween({ opacity: 0 }, 500, 'easeInOutSine');
                 if (about) about.destroy();
                 about = self.initClass(UIAbout);
                 defer(about.animateIn);
             } else {
-                ScrollLock.instance().unlock();
-                wrapper.tween({ opacity: 1 }, 800, 'easeInOutSine');
                 about.animateOut(() => {
                     about = about.destroy();
                 });
@@ -1093,7 +1021,7 @@ class Loader extends Interface {
             });
 
             bg = self.create('.bg');
-            bg.css({ top: 70, opacity: 0 }).transform({ z: -300, rotationX: -1, rotationY: 1, rotationZ: -0.5 }).enable3D().mouseEnabled(false);
+            bg.css({ top: 70, opacity: 0 }).transform({ x: -1, z: -300, rotationX: -1, rotationY: 1, rotationZ: -0.5 }).enable3D().mouseEnabled(false);
         }
 
         function initViews() {
@@ -1104,15 +1032,7 @@ class Loader extends Interface {
 
         function initLoader() {
             Promise.all([
-                FontLoader.loadFonts([
-                    { family: 'Source Sans Pro', style: 'normal', weight: '400' },
-                    { family: 'Source Sans Pro', style: 'italic', weight: '400' },
-                    { family: 'Source Sans Pro', style: 'normal', weight: '600' },
-                    { family: 'Crimson Text', style: 'normal', weight: '400' },
-                    { family: 'Crimson Text', style: 'italic', weight: '400' },
-                    { family: 'Crimson Text', style: 'normal', weight: '600' },
-                    //{ family: 'Minion Pro', style: 'normal', weight: 'normal' }
-                ]),
+                FontLoader.loadFonts(['Helvetica Neue', 'Playfair Display']),
                 AssetLoader.loadAssets([`assets/data/data.json?${Utils.timestamp()}`])
             ]).then(() => {
                 const photos = Assets.getData('data').photos;
@@ -1141,9 +1061,6 @@ class Loader extends Interface {
                 self.events.add(loader, Events.PROGRESS, view.update);
                 self.events.add(loader, Events.COMPLETE, () => {
                     self.events.add(Mouse.input, Interaction.CLICK, click);
-                });
-                self.events.add(view, Events.COMPLETE, () => {
-                    view.start();
                 });
             });
         }
@@ -1241,6 +1158,7 @@ class Intro2 extends Interface {
 
             wrapper = self.create('.wrapper');
             wrapper.css({ padding: '0 20px' });
+            if (Device.phone) wrapper.css({ maxWidth: 335 });
         }
 
         function initViews() {
@@ -1250,13 +1168,12 @@ class Intro2 extends Interface {
             //title.css({ textAlign: 'center' });
             //lines.push(title);
             const text = [
-                'This site is dedicated, to our grandfather, Gerald Richardson,',
-                'Photographer and filmmaker.',
-                'A true influence to us all.'
+                'This site is dedicated to our grandfather, Gerald Richardson,',
+                'a true influence on each of our paths.'
             ];
             text.forEach((copy, i) => {
-                const line = wrapper.initClass(UICaption, copy, i === 0);
-                line.css({ textAlign: 'center' });
+                const line = wrapper.initClass(UITitle, copy, i === 0);
+                line.css({ textAlign: 'center', opacity: 0 });
                 if (i === 1) line.css({ marginTop: 10 });
                 lines.push(line);
             });
@@ -1330,8 +1247,8 @@ class Intro1 extends Interface {
                 'A gift for James Richardson'
             ];
             text.forEach((copy, i) => {
-                const line = wrapper.initClass(UICaption, copy, i === 0);
-                line.css({ textAlign: 'center' });
+                const line = wrapper.initClass(UITitle, copy, i === 0);
+                line.css({ textAlign: 'center', opacity: 0 });
                 if (i === 1) line.css({ marginTop: 10 });
                 lines.push(line);
             });
@@ -1391,7 +1308,7 @@ class PierreBertonVideo extends Interface {
 
         function initViews() {
             title = self.initClass(UICaption, '“Great Days On King” &nbsp;—&nbsp;Pierre&nbsp;Berton');
-            button = self.initClass(UIButton, (Device.mobile ? 'Tap' : 'Click') + ' to skip');
+            button = self.initClass(UIButton, 'Skip');
             caption = self.initClass(UICaptionCard, [title, button]);
         }
 
@@ -1472,7 +1389,7 @@ class Container extends Interface {
         super('Container');
         const self = this;
         const rows = [];
-        let player, intro1, intro2, loader, wrapper, lines;
+        let player, intro1, intro2, loader, top, lines, bottom;
 
         initContainer();
         initViews();
@@ -1480,14 +1397,14 @@ class Container extends Interface {
 
         function initContainer() {
             Stage.allowScroll();
-            Stage.css({ position: '', overflow: '' });
-            self.size('100%', 'auto').mouseEnabled(true);
-            self.css({ paddingBottom: 70 });
+            Stage.css({ position: 'static' });
+            self.css({ position: 'static' });
             Stage.add(self);
             window.history.scrollRestoration = 'manual';
 
-            wrapper = self.create('.wrapper');
-            wrapper.css({
+            top = self.create('.top');
+            top.size('100%', 'auto');
+            top.css({
                 position: 'relative',
                 paddingTop: 70,
                 paddingBottom: 30
@@ -1502,17 +1419,11 @@ class Container extends Interface {
         }
 
         function addListeners() {
-            self.events.add(Events.RESIZE, resize);
-            self.events.add(Events.PHOTO, photo);
-            //window.addEventListener('scroll', scroll);
-            resize();
+            self.events.add(Events.PHOTO, disable);
+            self.events.add(Events.TOGGLE_ABOUT, disable);
         }
 
-        function resize() {
-            wrapper.size(window.innerWidth, 'auto');
-        }
-
-        function photo(e) {
+        function disable(e) {
             if (e.open) {
                 self.mouseEnabled(false);
                 ScrollLock.instance().lock();
@@ -1521,12 +1432,6 @@ class Container extends Interface {
                 ScrollLock.instance().unlock();
             }
         }
-
-        /*function scroll() {
-            const scrollElement = document.scrollingElement || document.documentElement;
-            wrapper.css({ x: scrollElement.scrollLeft });
-            rows.forEach(row => row.scroll(scrollElement.scrollLeft));
-        }*/
 
         async function closeVideo() {
             self.events.remove(Events.VIDEO, closeVideo);
@@ -1545,22 +1450,45 @@ class Container extends Interface {
             lines = [];
 
             const text = [
-                'GERALD RICHARDSON',
+                'Gerald Richardson',
                 '60 years behind the camera'
             ];
             text.forEach((copy, i) => {
-                const line = wrapper.initClass(UICaption, copy, i === 0);
-                line.css({ textAlign: 'center' });
+                const line = top.initClass(UITitle, copy, i === 0);
+                line.css({ textAlign: 'center', opacity: 0 });
                 if (i === 1) line.css({ marginTop: 10 });
                 lines.push(line);
             });
 
-            ['1950s Royals', '1939 Royal Visit', 'Navy', 'Fashion', 'Portraits of Gerry Richardson', 'Film and Television', 'News'].forEach(tag => {
+            ['1939 Royal Visit', '1950s Royals', 'Navy', 'Fashion', 'Portraits of Gerry Richardson', 'Film and Television', 'News'].forEach(tag => {
                 const matched = [];
                 Config.PHOTOS.forEach(item => {
                     if (~item.type.toLowerCase().indexOf(tag.toLowerCase())) matched.push(item);
                 });
                 createRow(matched, tag);
+            });
+
+            bottom = self.create('.bottom');
+            bottom.size('100%', 'auto');
+            bottom.css({
+                position: 'relative',
+                paddingTop: 70,
+                paddingBottom: 30
+            });
+
+            const copyright = bottom.initClass(UITitle, 'All rights reserved.');
+            copyright.css({
+                padding: '0 30px'
+            });
+            copyright.animateIn(1000);
+
+            const project = bottom.initClass(UINavLink, { text: 'Contact', width: 58 });
+            project.css({
+                bottom: 25,
+                right: 30
+            });
+            self.events.add(project, Events.CLICK, () => {
+                open('mailto:info@geraldrichardson.ca');
             });
 
             await self.wait(2000);
@@ -1571,7 +1499,7 @@ class Container extends Interface {
             });
             await lines.last().promise;
 
-            self.initClass(UI);
+            Stage.initClass(UI);
         }
 
         function createRow(photos, tag) {
@@ -1611,8 +1539,6 @@ class Container extends Interface {
 class Main {
 
     constructor() {
-
-        Accelerometer.init();
         Mouse.init();
         init();
 
