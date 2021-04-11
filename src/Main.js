@@ -1,5 +1,5 @@
 /**
- * Gerald Richardson — 60 years behind the camera.
+ * Gerald Richardson — 60 Years Behind The Camera.
  *
  * @author Patrick Schroen / https://github.com/pschroen
  */
@@ -10,7 +10,7 @@ import 'mdn-polyfills/Object.assign';
 import 'regenerator-runtime/runtime'; // Babel support for async/await
 
 import { Events, Stage, Interface, Device, Interaction, Mouse, Utils,
-    Assets, Video, AssetLoader, FontLoader, StateDispatcher, ScrollLock } from '../alien.js/src/Alien.js';
+    Assets, Video, AssetLoader, FontLoader, ScrollLock } from '../alien.js/src/Alien.js';
 
 Config.UI_OFFSET = Device.phone ? 15 : 25;
 Config.PHOTOS = [];
@@ -19,7 +19,8 @@ Config.ASSETS = [
     'assets/images/close.png',
     //'assets/images/logo_thestar.png',
     //'assets/images/logo_myseum.png',
-    //'assets/images/logo_nfb.png'
+    //'assets/images/logo_nfb.png',
+    'assets/photos/1600/BIO_newspaperpresses.jpg'
 ];
 
 Events.VIDEO = 'video';
@@ -41,7 +42,7 @@ class Photo {
     }
 }
 
-class Data {
+/* class Data {
 
     static init() {
         //const self = this;
@@ -57,7 +58,7 @@ class Data {
         //function stateChange(e) {
         //}
     }
-}
+} */
 
 class UIClose extends Interface {
 
@@ -190,7 +191,11 @@ class UIAbout extends Interface {
 
         function initHTML() {
             self.size('100%').invisible().setZ(100000).mouseEnabled(true);
-            self.css({ position: 'fixed', overflow: 'hidden' });
+            self.css({
+                position: 'fixed',
+                overflow: 'hidden',
+                overscrollBehavior: 'contain'
+            });
 
             container = self.create('.container');
             container.size('100%');
@@ -420,12 +425,13 @@ class UIPhoto extends Interface {
         function initHTML() {
             self.size('100%').hide().setZ(100000);
             self.css({
-                overflow: 'hidden',
                 position: 'fixed',
                 top: 0,
                 left: 0,
                 backgroundColor: 'black',
-                opacity: 0
+                opacity: 0,
+                overflow: 'hidden',
+                overscrollBehavior: 'contain'
             });
             media = self.create('.fullscreen-carousel');
             media.size('100%');
@@ -620,7 +626,7 @@ class UIRow extends Interface {
     }
 }
 
-class UIButton extends Interface {
+/* class UIButton extends Interface {
 
     constructor(copy = '') {
         super('.UIButton');
@@ -657,7 +663,7 @@ class UIButton extends Interface {
             await this.tween({ opacity: 0 }, 200, 'easeOutSine', delay);
         };
     }
-}
+} */
 
 class UITitle extends Interface {
 
@@ -739,7 +745,7 @@ class UICaption extends Interface {
     }
 }
 
-class UILoader extends Interface {
+/* class UILoader extends Interface {
 
     constructor() {
         super('.UILoader');
@@ -776,12 +782,13 @@ class UILoader extends Interface {
             });
         };
 
-        this.animateIn = () => {
+        this.animateIn = async delay => {
             this.animatedIn = true;
             this.delayedCall(async () => {
                 if (this.progress >= 1) return;
                 await number.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutCubic');
             }, 2000);
+            await this.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutCubic', delay);
         };
 
         this.animateOut = async delay => {
@@ -789,7 +796,7 @@ class UILoader extends Interface {
             await this.tween({ opacity: 0 }, 200, 'easeOutSine', delay);
         };
     }
-}
+} */
 
 class UICaptionCard extends Interface {
 
@@ -895,6 +902,16 @@ class UINavLink extends Interface {
             // over.tween({ y: 15, opacity: 0 }, 500, 'easeOutCubic');
             line.tween({ x: config.width * 2 }, 300, 'easeOutCubic');
         };
+
+        this.animateIn = async delay => {
+            this.animatedIn = true;
+            await this.css({ opacity: 0 }).tween({ opacity: 1 }, 1000, 'easeOutCubic', delay);
+        };
+
+        this.animateOut = async delay => {
+            this.animatedIn = false;
+            await this.tween({ opacity: 0 }, 200, 'easeOutSine', delay);
+        };
     }
 }
 
@@ -903,7 +920,7 @@ class UINav extends Interface {
     constructor() {
         super('UINav');
         const self = this;
-        let project;
+        let button;
 
         initHTML();
         initLinks();
@@ -914,15 +931,15 @@ class UINav extends Interface {
         }
 
         function initLinks() {
-            project = self.initClass(UINavLink, { text: 'About', width: 45 });
-            project.css({
+            button = self.initClass(UINavLink, { text: 'About', width: 45 });
+            button.css({
                 top: 25,
                 right: 30
             });
         }
 
         function addListeners() {
-            self.events.add(project, Events.CLICK, () => {
+            self.events.add(button, Events.CLICK, () => {
                 if (!Global.ABOUT_VISIBLE) {
                     self.events.fire(Events.TOGGLE_ABOUT, { open: true });
                 } else {
@@ -971,17 +988,17 @@ class UI extends Interface {
         }
 
         function addListeners() {
-            self.events.add(Events.PHOTO, photo);
+            // self.events.add(Events.PHOTO, photo);
             self.events.add(Events.TOGGLE_ABOUT, toggleAbout);
         }
 
-        function photo(e) {
+        /* function photo(e) {
             if (e.open) {
                 nav.animateOut();
             } else {
                 nav.animateIn();
             }
-        }
+        } */
 
         function toggleAbout(e) {
             if (e.open) {
@@ -997,21 +1014,18 @@ class UI extends Interface {
     }
 }
 
-class Loader extends Interface {
+class IntroLoader extends Interface {
 
     constructor() {
-        super('Loader');
+        super('IntroLoader');
         const self = this;
-        let bg, image, caption, title, view;
+        let wrapper, lines;
 
         initHTML();
         initViews();
-        initLoader();
-        addListeners();
-        defer(animateIn);
 
         function initHTML() {
-            self.size('100%').enable3D(2000).invisible();
+            self.size('100%').bg('#fff');
             self.css({
                 overflow: 'hidden',
                 position: 'fixed',
@@ -1020,14 +1034,97 @@ class Loader extends Interface {
                 cursor: 'pointer'
             });
 
-            bg = self.create('.bg');
-            bg.css({ top: 70, opacity: 0 }).transform({ x: -1, z: -300, rotationX: -1, rotationY: 1, rotationZ: -0.5 }).enable3D().mouseEnabled(false);
+            wrapper = self.create('.wrapper');
+            wrapper.css({ padding: '0 20px' });
+            if (Device.phone) wrapper.css({ maxWidth: 335 });
         }
 
         function initViews() {
-            title = self.initClass(UICaption, '“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...” &nbsp;—&nbsp;Gerald&nbsp;Richardson');
-            view = self.initClass(UILoader);
-            caption = self.initClass(UICaptionCard, [title, view]);
+            lines = [];
+
+            const text = [
+                'GERALD RICHARDSON',
+                '60 Years Behind The Camera'
+            ];
+            text.forEach((copy, i) => {
+                const line = wrapper.initClass(UITitle, copy, i === 0);
+                line.css({ textAlign: 'center', opacity: 0 });
+                if (i === 1) line.css({ marginTop: 10 });
+                lines.push(line);
+            });
+
+            const button = wrapper.initClass(UINavLink, { text: 'Enter', width: 40 });
+            button.css({
+                position: 'relative',
+                margin: '20px auto 0',
+                textAlign: 'center',
+                opacity: 0
+            });
+            lines.push(button);
+
+            wrapper.size().center().css({ marginTop: -108 });
+        }
+
+        this.animateIn = async () => {
+            this.animatedIn = true;
+            await this.wait(100);
+            let delay = 0;
+            lines.forEach(line => {
+                line.promise = line.animateIn(delay);
+                delay += 500;
+            });
+            await lines.last().promise;
+        };
+
+        this.animateOut = async callback => {
+            this.animatedIn = false;
+            lines.reverse();
+            let delay = 0;
+            lines.forEach(line => {
+                line.promise = line.animateOut(delay);
+                delay += 250;
+            });
+            await lines.last().promise;
+            return this.tween({ opacity: 0 }, 1350, 'easeInSine', callback);
+        };
+    }
+}
+
+class Loader extends Interface {
+
+    constructor() {
+        super('Loader');
+        const self = this;
+        // let bg, image, caption, title, view;
+        // let caption, title, view;
+        let intro;
+
+        initHTML();
+        initViews();
+        initLoader();
+        // addListeners();
+        defer(animateIn);
+
+        function initHTML() {
+            // self.size('100%').enable3D(2000).invisible();
+            self.size('100%').invisible();
+            self.css({
+                overflow: 'hidden',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                cursor: 'pointer'
+            });
+
+            // bg = self.create('.bg');
+            // bg.css({ top: 70, opacity: 0 }).transform({ z: -300, rotationX: -1, rotationY: 1, rotationZ: -0.5 }).enable3D().mouseEnabled(false);
+        }
+
+        function initViews() {
+            // title = self.initClass(UICaption, '“I’ve seen [Farley Mowat] swim naked among the thousands of Caplin...” &nbsp;—&nbsp;Gerald&nbsp;Richardson');
+            // view = self.initClass(UILoader);
+            // caption = self.initClass(UICaptionCard, [title, view]);
+            intro = self.initClass(IntroLoader);
         }
 
         function initLoader() {
@@ -1038,7 +1135,7 @@ class Loader extends Interface {
                 const photos = Assets.getData('data').photos;
                 photos.forEach(item => Config.PHOTOS.push(new Photo(item)));
 
-                Data.init();
+                /* Data.init();
 
                 const featured = [];
                 photos.forEach(item => {
@@ -1061,7 +1158,20 @@ class Loader extends Interface {
                 self.events.add(loader, Events.PROGRESS, view.update);
                 self.events.add(loader, Events.COMPLETE, () => {
                     self.events.add(Mouse.input, Interaction.CLICK, click);
+                }); */
+
+                // Preload first couple rows
+                const matched = [];
+                ['1939 Royal Visit', '1950s Royals'].forEach(tag => {
+                    Config.PHOTOS.forEach(item => {
+                        if (~item.type.toLowerCase().indexOf(tag.toLowerCase())) matched.push(item);
+                    });
                 });
+
+                const assets = Config.ASSETS.concat(matched.map(item => `assets/photos/400/${item.image}`));
+                AssetLoader.loadAssets(assets);
+
+                self.events.add(Mouse.input, Interaction.CLICK, click);
             });
         }
 
@@ -1070,7 +1180,7 @@ class Loader extends Interface {
             Container.instance().start();
         }
 
-        function addListeners() {
+        /* function addListeners() {
             self.events.add(Events.RESIZE, resize);
         }
 
@@ -1083,17 +1193,19 @@ class Loader extends Interface {
                 height = Math.round(width * (image.height / image.width));
             }
             bg.size(width, height).center(1, 0);
-        }
+        } */
 
         async function animateIn() {
             self.visible();
-            await caption.animateIn();
+            // await caption.animateIn();
+            await intro.animateIn();
         }
 
         this.animateOut = callback => {
-            caption.animateOut();
-            bg.tween({ z: -300 }, 700, 'easeInCubic');
-            this.tween({ opacity: 0 }, 700, 'easeOutSine', callback);
+            // caption.animateOut();
+            intro.animateOut();
+            // bg.tween({ z: -300 }, 700, 'easeInCubic');
+            this.tween({ opacity: 0 }, 1350, 'easeOutSine', callback);
         };
     }
 }
@@ -1308,8 +1420,14 @@ class PierreBertonVideo extends Interface {
 
         function initViews() {
             title = self.initClass(UICaption, '“Great Days On King” &nbsp;—&nbsp;Pierre&nbsp;Berton');
-            button = self.initClass(UIButton, 'Skip');
+            // button = self.initClass(UIButton, 'Skip');
+            button = self.initClass(UINavLink, { text: 'Skip', width: 32 });
             caption = self.initClass(UICaptionCard, [title, button]);
+
+            button.css({
+                bottom: 7,
+                opacity: 0
+            });
         }
 
         function addListeners() {
@@ -1450,8 +1568,8 @@ class Container extends Interface {
             lines = [];
 
             const text = [
-                'Gerald Richardson',
-                '60 years behind the camera'
+                'GERALD RICHARDSON',
+                '60 Years Behind The Camera'
             ];
             text.forEach((copy, i) => {
                 const line = top.initClass(UITitle, copy, i === 0);
@@ -1482,12 +1600,12 @@ class Container extends Interface {
             });
             copyright.animateIn(1000);
 
-            const project = bottom.initClass(UINavLink, { text: 'Contact', width: 58 });
-            project.css({
+            const button = bottom.initClass(UINavLink, { text: 'Contact', width: 59 });
+            button.css({
                 bottom: 25,
                 right: 30
             });
-            self.events.add(project, Events.CLICK, () => {
+            self.events.add(button, Events.CLICK, () => {
                 open('mailto:info@geraldrichardson.ca');
             });
 
